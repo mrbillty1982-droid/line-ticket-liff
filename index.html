@@ -78,45 +78,60 @@
     </div>
     <div id="errorText" class="error"></div>
   </div>
+<script>
+  const LIFF_ID = '2010068818-kY6vm7iV';
 
-  <script>
-    const LIFF_ID = '2010068818-kY6vm7iV';
+  const WEB_APP_URL = 'https://script.google.com/macros/s/AKfycbyuIYH31jIBoJ7FdIyagfVU2KcId8Y6nRks89EbXSemH8RhqCVuckmcoydr2Na9hv8IOA/exec';
 
-    const WEB_APP_URL = 'https://script.google.com/macros/s/AKfycbyuIYH31jIBoJ7FdIyagfVU2KcId8Y6nRks89EbXSemH8RhqCVuckmcoydr2Na9hv8IOA/exec';
+  async function main() {
+    try {
+      alert('GITHUB ทำงานแล้ว');
 
-   async function main() {
-  alert('GITHUB ทำงานแล้ว');
+      await liff.init({ liffId: LIFF_ID });
 
-  try {
-        await liff.init({ liffId: LIFF_ID });
+      alert(
+        'LIFF พร้อมแล้ว\n' +
+        'เปิดใน LINE: ' + liff.isInClient() + '\n' +
+        'Login: ' + liff.isLoggedIn()
+      );
 
-        if (!liff.isLoggedIn()) {
-          liff.login();
-          return;
-        }
-
-        const profile = await liff.getProfile();
-
-        const lineUserId = profile.userId || '';
-        const lineDisplayName = profile.displayName || '';
-    alert('LINE ID: ' + lineUserId + '\nNAME: ' + lineDisplayName);
-             const targetUrl =
-          WEB_APP_URL +
-          '?page=booking' +
-          '&lineUserId=' + encodeURIComponent(lineUserId) +
-          '&lineDisplayName=' + encodeURIComponent(lineDisplayName);
-
-        alert('TARGET URL: ' + targetUrl);
-    
-        window.location.replace(targetUrl);
-
-      } catch (err) {
-        document.getElementById('errorText').innerHTML =
-          'เกิดข้อผิดพลาดในการเข้าสู่ระบบ LINE<br>' + err.message;
+      if (!liff.isLoggedIn()) {
+        liff.login();
+        return;
       }
+
+      const profile = await liff.getProfile();
+
+      const lineUserId = profile && profile.userId ? profile.userId : '';
+      const lineDisplayName = profile && profile.displayName ? profile.displayName : '';
+
+      alert('LINE ID: ' + lineUserId + '\nNAME: ' + lineDisplayName);
+
+      if (!lineUserId) {
+        document.getElementById('errorText').innerHTML =
+          'ไม่ได้รับ LineUserId จาก LINE<br>กรุณาตรวจสอบ Scope: profile ใน LIFF';
+        return;
+      }
+
+      const targetUrl =
+        WEB_APP_URL +
+        '?page=booking' +
+        '&lineUserId=' + encodeURIComponent(lineUserId) +
+        '&lineDisplayName=' + encodeURIComponent(lineDisplayName);
+
+      alert('TARGET URL: ' + targetUrl);
+
+      window.location.href = targetUrl;
+
+    } catch (err) {
+      document.getElementById('errorText').innerHTML =
+        'เกิดข้อผิดพลาดในการเข้าสู่ระบบ LINE<br>' + err.message;
+
+      alert('GITHUB ERROR: ' + err.message);
     }
-    
-    main();
-  </script>
+  }
+
+  main();
+</script>
 </body>
 </html>
