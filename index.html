@@ -79,53 +79,48 @@
     <div id="errorText" class="error"></div>
   </div>
 
-  <script>
-    const LIFF_ID = '2010068818-kY6vm7iV';
+<script>
+  const LIFF_ID = '2010068818-kY6vm7iV';
 
-    const WEB_APP_URL = 'https://script.google.com/macros/s/AKfycbyuIYH31jIBoJ7FdIyagfVU2KcId8Y6nRks89EbXSemH8RhqCVuckmcoydr2Na9hv8IOA/exec';
+  const WEB_APP_URL = 'https://script.google.com/macros/s/AKfycbyuIYH31jIBoJ7FdIyagfVU2KcId8Y6nRks89EbXSemH8RhqCVuckmcoydr2Na9hv8IOA/exec';
 
-    async function main() {
-      try {
-     
-        await liff.init({
-          liffId: LIFF_ID
-        });
+  async function main() {
+    try {
+      await liff.init({
+        liffId: LIFF_ID
+      });
 
-        
-        if (!liff.isLoggedIn()) {
-          liff.login();
-          return;
-        }
+      if (!liff.isLoggedIn()) {
+        liff.login();
+        return;
+      }
 
-        const profile = await liff.getProfile();
+      const profile = await liff.getProfile();
 
-        const lineUserId = profile && profile.userId ? profile.userId : '';
-        const lineDisplayName = profile && profile.displayName ? profile.displayName : '';
+      const lineUserId = profile && profile.userId ? profile.userId : '';
+      const lineDisplayName = profile && profile.displayName ? profile.displayName : '';
 
-      
-        if (!lineUserId) {
-          document.getElementById('errorText').innerHTML =
-            'ไม่ได้รับ LineUserId จาก LINE<br>กรุณาตรวจสอบ Scope: profile ใน LIFF';
-          return;
-        }
-
-        const targetUrl =
-          WEB_APP_URL +
-          '?page=booking' +
-          '&lineUserId=' + encodeURIComponent(lineUserId) +
-          '&lineDisplayName=' + encodeURIComponent(lineDisplayName);
-
-        
-        window.location.href = targetUrl;
-
-      } catch (err) {
+      if (!lineUserId) {
         document.getElementById('errorText').innerHTML =
-          'เกิดข้อผิดพลาดในการเข้าสู่ระบบ LINE<br>' + err.message;
+          'ไม่สามารถอ่านข้อมูล LINE ได้<br>กรุณาปิดหน้านี้แล้วเปิดใหม่จาก LINE OA';
+        return;
+      }
 
-           }
+      const targetUrl =
+        WEB_APP_URL +
+        '?page=booking' +
+        '&lineUserId=' + encodeURIComponent(lineUserId) +
+        '&lineDisplayName=' + encodeURIComponent(lineDisplayName);
+
+      window.location.href = targetUrl;
+
+    } catch (err) {
+      document.getElementById('errorText').innerHTML =
+        'เข้าสู่ระบบ LINE ไม่สำเร็จ<br>กรุณาปิดหน้านี้แล้วลองใหม่อีกครั้ง';
     }
+  }
 
-    main();
-  </script>
+  main();
+</script>
 </body>
 </html>
