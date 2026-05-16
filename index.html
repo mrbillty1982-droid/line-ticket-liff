@@ -54,9 +54,7 @@
     }
 
     @keyframes spin {
-      to {
-        transform: rotate(360deg);
-      }
+      to { transform: rotate(360deg); }
     }
 
     .error {
@@ -78,60 +76,61 @@
     </div>
     <div id="errorText" class="error"></div>
   </div>
-<script>
-  const LIFF_ID = '2010068818-kY6vm7iV';
 
-  const WEB_APP_URL = 'https://script.google.com/macros/s/AKfycbyuIYH31jIBoJ7FdIyagfVU2KcId8Y6nRks89EbXSemH8RhqCVuckmcoydr2Na9hv8IOA/exec';
+  <script>
+    const LIFF_ID = '2010068818-kY6vm7iV';
 
-  async function main() {
-    try {
-      alert('GITHUB ทำงานแล้ว');
+    const WEB_APP_URL = 'https://script.google.com/macros/s/AKfycbyuIYH31jIBoJ7FdIyagfVU2KcId8Y6nRks89EbXSemH8RhqCVuckmcoydr2Na9hv8IOA/exec';
 
-      await liff.init({ liffId: LIFF_ID });
+    async function main() {
+      try {
+        alert('GITHUB ทำงานแล้ว');
 
-      alert(
-        'LIFF พร้อมแล้ว\n' +
-        'เปิดใน LINE: ' + liff.isInClient() + '\n' +
-        'Login: ' + liff.isLoggedIn()
-      );
+        await liff.init({ liffId: LIFF_ID });
 
-      if (!liff.isLoggedIn()) {
-        liff.login();
-        return;
-      }
+        alert(
+          'LIFF พร้อมแล้ว\n' +
+          'เปิดใน LINE: ' + liff.isInClient() + '\n' +
+          'Login: ' + liff.isLoggedIn()
+        );
 
-      const profile = await liff.getProfile();
+        if (!liff.isLoggedIn()) {
+          liff.login();
+          return;
+        }
 
-      const lineUserId = profile && profile.userId ? profile.userId : '';
-      const lineDisplayName = profile && profile.displayName ? profile.displayName : '';
+        const profile = await liff.getProfile();
 
-      alert('LINE ID: ' + lineUserId + '\nNAME: ' + lineDisplayName);
+        const lineUserId = profile && profile.userId ? profile.userId : '';
+        const lineDisplayName = profile && profile.displayName ? profile.displayName : '';
 
-      if (!lineUserId) {
+        alert('LINE ID: ' + lineUserId + '\nNAME: ' + lineDisplayName);
+
+        if (!lineUserId) {
+          document.getElementById('errorText').innerHTML =
+            'ไม่ได้รับ LineUserId จาก LINE<br>กรุณาตรวจสอบ Scope: profile ใน LIFF';
+          return;
+        }
+
+        const targetUrl =
+          WEB_APP_URL +
+          '?page=booking' +
+          '&lineUserId=' + encodeURIComponent(lineUserId) +
+          '&lineDisplayName=' + encodeURIComponent(lineDisplayName);
+
+        alert('TARGET URL: ' + targetUrl);
+
+        window.location.href = targetUrl;
+
+      } catch (err) {
         document.getElementById('errorText').innerHTML =
-          'ไม่ได้รับ LineUserId จาก LINE<br>กรุณาตรวจสอบ Scope: profile ใน LIFF';
-        return;
+          'เกิดข้อผิดพลาดในการเข้าสู่ระบบ LINE<br>' + err.message;
+
+        alert('GITHUB ERROR: ' + err.message);
       }
-
-      const targetUrl =
-        WEB_APP_URL +
-        '?page=booking' +
-        '&lineUserId=' + encodeURIComponent(lineUserId) +
-        '&lineDisplayName=' + encodeURIComponent(lineDisplayName);
-
-      alert('TARGET URL: ' + targetUrl);
-
-      window.location.href = targetUrl;
-
-    } catch (err) {
-      document.getElementById('errorText').innerHTML =
-        'เกิดข้อผิดพลาดในการเข้าสู่ระบบ LINE<br>' + err.message;
-
-      alert('GITHUB ERROR: ' + err.message);
     }
-  }
 
-  main();
-</script>
+    main();
+  </script>
 </body>
 </html>
