@@ -98,13 +98,14 @@
 
         const lineUserId = profile.userId || '';
         const lineDisplayName = profile.displayName || '';
-
+         alert('LINE ID: ' + lineUserId + '\nNAME: ' + lineDisplayName);
         const targetUrl =
           WEB_APP_URL +
           '?page=booking' +
           '&lineUserId=' + encodeURIComponent(lineUserId) +
           '&lineDisplayName=' + encodeURIComponent(lineDisplayName);
 
+        alert('TARGET URL: ' + targetUrl);
         window.location.replace(targetUrl);
 
       } catch (err) {
