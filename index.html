@@ -86,18 +86,12 @@
 
     async function main() {
       try {
-        alert('GITHUB ทำงานแล้ว');
-
+     
         await liff.init({
           liffId: LIFF_ID
         });
 
-        alert(
-          'LIFF พร้อมแล้ว\n' +
-          'เปิดใน LINE: ' + liff.isInClient() + '\n' +
-          'Login: ' + liff.isLoggedIn()
-        );
-
+        
         if (!liff.isLoggedIn()) {
           liff.login();
           return;
@@ -108,8 +102,7 @@
         const lineUserId = profile && profile.userId ? profile.userId : '';
         const lineDisplayName = profile && profile.displayName ? profile.displayName : '';
 
-        alert('LINE ID: ' + lineUserId + '\nNAME: ' + lineDisplayName);
-
+      
         if (!lineUserId) {
           document.getElementById('errorText').innerHTML =
             'ไม่ได้รับ LineUserId จาก LINE<br>กรุณาตรวจสอบ Scope: profile ใน LIFF';
@@ -122,16 +115,14 @@
           '&lineUserId=' + encodeURIComponent(lineUserId) +
           '&lineDisplayName=' + encodeURIComponent(lineDisplayName);
 
-        alert('TARGET URL: ' + targetUrl);
-
+        
         window.location.href = targetUrl;
 
       } catch (err) {
         document.getElementById('errorText').innerHTML =
           'เกิดข้อผิดพลาดในการเข้าสู่ระบบ LINE<br>' + err.message;
 
-        alert('GITHUB ERROR: ' + err.message);
-      }
+           }
     }
 
     main();
