@@ -84,9 +84,10 @@
 
     const WEB_APP_URL = 'https://script.google.com/macros/s/AKfycbyuIYH31jIBoJ7FdIyagfVU2KcId8Y6nRks89EbXSemH8RhqCVuckmcoydr2Na9hv8IOA/exec';
 
-    async function main() {
-      alert('GITHUB ทำงานแล้ว');
-      try {
+   async function main() {
+  alert('GITHUB ทำงานแล้ว');
+
+  try {
         await liff.init({ liffId: LIFF_ID });
 
         if (!liff.isLoggedIn()) {
@@ -98,14 +99,15 @@
 
         const lineUserId = profile.userId || '';
         const lineDisplayName = profile.displayName || '';
-         alert('LINE ID: ' + lineUserId + '\nNAME: ' + lineDisplayName);
-        const targetUrl =
+    alert('LINE ID: ' + lineUserId + '\nNAME: ' + lineDisplayName);
+             const targetUrl =
           WEB_APP_URL +
           '?page=booking' +
           '&lineUserId=' + encodeURIComponent(lineUserId) +
           '&lineDisplayName=' + encodeURIComponent(lineDisplayName);
 
         alert('TARGET URL: ' + targetUrl);
+    
         window.location.replace(targetUrl);
 
       } catch (err) {
